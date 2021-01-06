@@ -2,6 +2,8 @@
 
 BASEDIR=$(dirname $0)
 
-sudo sysctl kernel.unprivileged_userns_clone=1
+if [ $(sysctl kernel.unprivileged_userns_clone | tail -c 2) -eq 0 ]; then
+        sudo -A sysctl kernel.unprivileged_userns_clone=1
+fi
 
 $BASEDIR/latest/chrome --user-data-dir="$BASEDIR/user-data-dir" $* &> /dev/null &
